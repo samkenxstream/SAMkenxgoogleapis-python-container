@@ -818,8 +818,8 @@ class ClusterManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.container_v1beta1.types.UpdateNodePoolRequest, dict]]):
-                The request object. SetNodePoolVersionRequest updates
-                the version of a node pool.
+                The request object. SetNodePoolVersionRequest updates the
+                version of a node pool.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2492,6 +2492,92 @@ class ClusterManagerAsyncClient:
         # Done; return the response.
         return response
 
+    async def get_json_web_keys(
+        self,
+        request: Optional[Union[cluster_service.GetJSONWebKeysRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cluster_service.GetJSONWebKeysResponse:
+        r"""Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+        This API is not yet intended for general use, and is not
+        available for all clusters.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import container_v1beta1
+
+            async def sample_get_json_web_keys():
+                # Create a client
+                client = container_v1beta1.ClusterManagerAsyncClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.GetJSONWebKeysRequest(
+                )
+
+                # Make the request
+                response = await client.get_json_web_keys(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.container_v1beta1.types.GetJSONWebKeysRequest, dict]]):
+                The request object. GetJSONWebKeysRequest gets the public component of the
+                keys used by the cluster to sign token requests. This
+                will be the jwks_uri for the discover document returned
+                by getOpenIDConfig. See the OpenID Connect Discovery 1.0
+                specification for details.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.container_v1beta1.types.GetJSONWebKeysResponse:
+                GetJSONWebKeysResponse is a valid
+                JSON Web Key Set as specififed in rfc
+                7517
+
+        """
+        # Create or coerce a protobuf request object.
+        request = cluster_service.GetJSONWebKeysRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_json_web_keys,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_node_pools(
         self,
         request: Optional[Union[cluster_service.ListNodePoolsRequest, dict]] = None,
@@ -2613,92 +2699,6 @@ class ClusterManagerAsyncClient:
                 deadline=20.0,
             ),
             default_timeout=20.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_json_web_keys(
-        self,
-        request: Optional[Union[cluster_service.GetJSONWebKeysRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> cluster_service.GetJSONWebKeysResponse:
-        r"""Gets the public component of the cluster signing keys
-        in JSON Web Key format.
-        This API is not yet intended for general use, and is not
-        available for all clusters.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import container_v1beta1
-
-            async def sample_get_json_web_keys():
-                # Create a client
-                client = container_v1beta1.ClusterManagerAsyncClient()
-
-                # Initialize request argument(s)
-                request = container_v1beta1.GetJSONWebKeysRequest(
-                )
-
-                # Make the request
-                response = await client.get_json_web_keys(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.container_v1beta1.types.GetJSONWebKeysRequest, dict]]):
-                The request object. GetJSONWebKeysRequest gets the
-                public component of the keys used by the cluster to sign
-                token requests. This will be the jwks_uri for the
-                discover document returned by getOpenIDConfig. See the
-                OpenID Connect Discovery 1.0 specification for details.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.container_v1beta1.types.GetJSONWebKeysResponse:
-                GetJSONWebKeysResponse is a valid
-                JSON Web Key Set as specififed in rfc
-                7517
-
-        """
-        # Create or coerce a protobuf request object.
-        request = cluster_service.GetJSONWebKeysRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_json_web_keys,
-            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3249,7 +3249,8 @@ class ClusterManagerAsyncClient:
         Args:
             request (Optional[Union[google.cloud.container_v1beta1.types.CompleteNodePoolUpgradeRequest, dict]]):
                 The request object. CompleteNodePoolUpgradeRequest sets
-                the name of target node pool to complete upgrade.
+                the name of target node pool to complete
+                upgrade.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -3331,9 +3332,10 @@ class ClusterManagerAsyncClient:
         Args:
             request (Optional[Union[google.cloud.container_v1beta1.types.RollbackNodePoolUpgradeRequest, dict]]):
                 The request object. RollbackNodePoolUpgradeRequest
-                rollbacks the previously Aborted or Failed NodePool
-                upgrade. This will be an no-op if the last upgrade
-                successfully completed.
+                rollbacks the previously Aborted or
+                Failed NodePool upgrade. This will be an
+                no-op if the last upgrade successfully
+                completed.
             project_id (:class:`str`):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
@@ -3482,8 +3484,9 @@ class ClusterManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.container_v1beta1.types.SetNodePoolManagementRequest, dict]]):
-                The request object. SetNodePoolManagementRequest sets
-                the node management properties of a node pool.
+                The request object. SetNodePoolManagementRequest sets the
+                node management properties of a node
+                pool.
             project_id (:class:`str`):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
@@ -3642,9 +3645,10 @@ class ClusterManagerAsyncClient:
         Args:
             request (Optional[Union[google.cloud.container_v1beta1.types.SetLabelsRequest, dict]]):
                 The request object. SetLabelsRequest sets the Google
-                Cloud Platform labels on a Google Container Engine
-                cluster, which will in turn set them for Google Compute
-                Engine resources used by that cluster
+                Cloud Platform labels on a Google
+                Container Engine cluster, which will in
+                turn set them for Google Compute Engine
+                resources used by that cluster
             project_id (:class:`str`):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
@@ -3807,7 +3811,8 @@ class ClusterManagerAsyncClient:
         Args:
             request (Optional[Union[google.cloud.container_v1beta1.types.SetLegacyAbacRequest, dict]]):
                 The request object. SetLegacyAbacRequest enables or
-                disables the ABAC authorization mechanism for a cluster.
+                disables the ABAC authorization
+                mechanism for a cluster.
             project_id (:class:`str`):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
@@ -3950,8 +3955,9 @@ class ClusterManagerAsyncClient:
         Args:
             request (Optional[Union[google.cloud.container_v1beta1.types.StartIPRotationRequest, dict]]):
                 The request object. StartIPRotationRequest creates a new
-                IP for the cluster and then performs a node upgrade on
-                each node pool to point to the new IP.
+                IP for the cluster and then performs a
+                node upgrade on each node pool to point
+                to the new IP.
             project_id (:class:`str`):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
@@ -4309,7 +4315,8 @@ class ClusterManagerAsyncClient:
         Args:
             request (Optional[Union[google.cloud.container_v1beta1.types.SetNetworkPolicyRequest, dict]]):
                 The request object. SetNetworkPolicyRequest
-                enables/disables network policy for a cluster.
+                enables/disables network policy for a
+                cluster.
             project_id (:class:`str`):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
@@ -4591,9 +4598,10 @@ class ClusterManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.container_v1beta1.types.ListUsableSubnetworksRequest, dict]]):
-                The request object. ListUsableSubnetworksRequest
-                requests the list of usable subnetworks. available to a
-                user for creating clusters.
+                The request object. ListUsableSubnetworksRequest requests
+                the list of usable subnetworks.
+                available to a user for creating
+                clusters.
             parent (:class:`str`):
                 Required. The parent project where subnetworks are
                 usable. Specified in the format ``projects/*``.

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -66,12 +68,14 @@ __protobuf__ = proto.module(
         "LegacyAbac",
         "NetworkPolicy",
         "BinaryAuthorization",
+        "PodCIDROverprovisionConfig",
         "IPAllocationPolicy",
         "Cluster",
         "NodePoolAutoConfig",
         "NodePoolDefaults",
         "NodeConfigDefaults",
         "ClusterUpdate",
+        "AdditionalPodRangesConfig",
         "Operation",
         "OperationProgress",
         "CreateClusterRequest",
@@ -168,6 +172,7 @@ __protobuf__ = proto.module(
         "LoggingVariantConfig",
         "MonitoringComponentConfig",
         "ManagedPrometheusConfig",
+        "Fleet",
         "LocalNvmeSsdBlockConfig",
         "EphemeralStorageLocalSsdConfig",
     },
@@ -187,8 +192,8 @@ class PrivateIPv6GoogleAccess(proto.Enum):
             Enables private IPv6 access to Google
             Services from GKE
         PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL (3):
-            Enables priate IPv6 access to and from Google
-            Services
+            Enables private IPv6 access to and from
+            Google Services
     """
     PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED = 0
     PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED = 1
@@ -893,6 +898,20 @@ class NodeNetworkConfig(proto.Message):
             Network bandwidth tier configuration.
 
             This field is a member of `oneof`_ ``_network_performance_config``.
+        pod_cidr_overprovision_config (google.cloud.container_v1.types.PodCIDROverprovisionConfig):
+            [PRIVATE FIELD] Pod CIDR size overprovisioning config for
+            the nodepool.
+
+            Pod CIDR size per node depends on max_pods_per_node. By
+            default, the value of max_pods_per_node is rounded off to
+            next power of 2 and we then double that to get the size of
+            pod CIDR block per node. Example: max_pods_per_node of 30
+            would result in 64 IPs (/26).
+
+            This config can disable the doubling of IPs (we still round
+            off to next power of 2) Example: max_pods_per_node of 30
+            will result in 32 IPs (/27) when overprovisioning is
+            disabled.
     """
 
     class NetworkPerformanceConfig(proto.Message):
@@ -950,6 +969,11 @@ class NodeNetworkConfig(proto.Message):
         number=11,
         optional=True,
         message=NetworkPerformanceConfig,
+    )
+    pod_cidr_overprovision_config: "PodCIDROverprovisionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="PodCIDROverprovisionConfig",
     )
 
 
@@ -1085,7 +1109,7 @@ class ReservationAffinity(proto.Message):
 
 
 class NodeTaint(proto.Message):
-    r"""Kubernetes taint is comprised of three fields: key, value, and
+    r"""Kubernetes taint is composed of three fields: key, value, and
     effect. Effect can only be one of three types: NoSchedule,
     PreferNoSchedule or NoExecute.
 
@@ -1844,6 +1868,22 @@ class BinaryAuthorization(proto.Message):
     )
 
 
+class PodCIDROverprovisionConfig(proto.Message):
+    r"""[PRIVATE FIELD] Config for pod CIDR size overprovisioning.
+
+    Attributes:
+        disable (bool):
+            Whether Pod CIDR overprovisioning is
+            disabled. Note: Pod CIDR overprovisioning is
+            enabled by default.
+    """
+
+    disable: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
 class IPAllocationPolicy(proto.Message):
     r"""Configuration for controlling how IPs are allocated in the
     cluster.
@@ -1967,12 +2007,31 @@ class IPAllocationPolicy(proto.Message):
         ipv6_access_type (google.cloud.container_v1.types.IPv6AccessType):
             The ipv6 access type (internal or external) when
             create_subnetwork is true
+        pod_cidr_overprovision_config (google.cloud.container_v1.types.PodCIDROverprovisionConfig):
+            [PRIVATE FIELD] Pod CIDR size overprovisioning config for
+            the cluster.
+
+            Pod CIDR size per node depends on max_pods_per_node. By
+            default, the value of max_pods_per_node is doubled and then
+            rounded off to next power of 2 to get the size of pod CIDR
+            block per node. Example: max_pods_per_node of 30 would
+            result in 64 IPs (/26).
+
+            This config can disable the doubling of IPs (we still round
+            off to next power of 2) Example: max_pods_per_node of 30
+            will result in 32 IPs (/27) when overprovisioning is
+            disabled.
         subnet_ipv6_cidr_block (str):
             Output only. [Output only] The subnet's IPv6 CIDR block used
             by nodes and pods.
         services_ipv6_cidr_block (str):
             Output only. [Output only] The services IPv6 CIDR block for
             the cluster.
+        additional_pod_ranges_config (google.cloud.container_v1.types.AdditionalPodRangesConfig):
+            Output only. [Output only] The additional pod ranges that
+            are added to the cluster. These pod ranges can be used by
+            new node pools to allocate pod IPs automatically. Once the
+            range is removed it will not show up in IPAllocationPolicy.
     """
 
     use_ip_aliases: bool = proto.Field(
@@ -2037,6 +2096,11 @@ class IPAllocationPolicy(proto.Message):
         number=17,
         enum="IPv6AccessType",
     )
+    pod_cidr_overprovision_config: "PodCIDROverprovisionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="PodCIDROverprovisionConfig",
+    )
     subnet_ipv6_cidr_block: str = proto.Field(
         proto.STRING,
         number=22,
@@ -2044,6 +2108,11 @@ class IPAllocationPolicy(proto.Message):
     services_ipv6_cidr_block: str = proto.Field(
         proto.STRING,
         number=23,
+    )
+    additional_pod_ranges_config: "AdditionalPodRangesConfig" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message="AdditionalPodRangesConfig",
     )
 
 
@@ -2351,6 +2420,8 @@ class Cluster(proto.Message):
             on the value of cluster fields, and may be sent
             on update requests to ensure the client has an
             up-to-date value before proceeding.
+        fleet (google.cloud.container_v1.types.Fleet):
+            Fleet information for the cluster.
     """
 
     class Status(proto.Enum):
@@ -2677,6 +2748,11 @@ class Cluster(proto.Message):
         proto.STRING,
         number=139,
     )
+    fleet: "Fleet" = proto.Field(
+        proto.MESSAGE,
+        number=140,
+        message="Fleet",
+    )
 
 
 class NodePoolAutoConfig(proto.Message):
@@ -2922,6 +2998,15 @@ class ClusterUpdate(proto.Message):
             the current stack type of the cluster, update
             will attempt to change the stack type to the new
             type.
+        additional_pod_ranges_config (google.cloud.container_v1.types.AdditionalPodRangesConfig):
+            The additional pod ranges to be added to the
+            cluster. These pod ranges can be used by node
+            pools to allocate pod IPs.
+        removed_additional_pod_ranges_config (google.cloud.container_v1.types.AdditionalPodRangesConfig):
+            The additional pod ranges that are to be removed from the
+            cluster. The pod ranges specified here must have been
+            specified earlier in the 'additional_pod_ranges_config'
+            argument.
     """
 
     desired_node_version: str = proto.Field(
@@ -3117,6 +3202,32 @@ class ClusterUpdate(proto.Message):
         proto.ENUM,
         number=119,
         enum="StackType",
+    )
+    additional_pod_ranges_config: "AdditionalPodRangesConfig" = proto.Field(
+        proto.MESSAGE,
+        number=120,
+        message="AdditionalPodRangesConfig",
+    )
+    removed_additional_pod_ranges_config: "AdditionalPodRangesConfig" = proto.Field(
+        proto.MESSAGE,
+        number=121,
+        message="AdditionalPodRangesConfig",
+    )
+
+
+class AdditionalPodRangesConfig(proto.Message):
+    r"""AdditionalPodRangesConfig is the configuration for additional
+    pod secondary ranges supporting the ClusterUpdate message.
+
+    Attributes:
+        pod_range_names (MutableSequence[str]):
+            Name for pod secondary ipv4 range which has
+            the actual range defined ahead.
+    """
+
+    pod_range_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -4870,7 +4981,9 @@ class NodePool(proto.Message):
         self_link (str):
             [Output only] Server-defined URL for the resource.
         version (str):
-            The version of the Kubernetes of this node.
+            The version of Kubernetes running on this NodePool's nodes.
+            If unspecified, it defaults as described
+            `here <https://cloud.google.com/kubernetes-engine/versioning#specifying_node_version>`__.
         instance_group_urls (MutableSequence[str]):
             [Output only] The resource URLs of the `managed instance
             groups <https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances>`__
@@ -5865,7 +5978,7 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__.
             This field is deprecated, min_cpu_platform should be
             specified using
-            https://cloud.google.com/requested-min-cpu-platform label
+            ``cloud.google.com/requested-min-cpu-platform`` label
             selector on the pod. To unset the min cpu platform field
             pass "automatic" as field value.
         disk_size_gb (int):
@@ -7246,8 +7359,9 @@ class UsableSubnetworkSecondaryRange(proto.Message):
                 UNUSED denotes that this range is unclaimed
                 by any cluster.
             IN_USE_SERVICE (2):
-                IN_USE_SERVICE denotes that this range is claimed by a
-                cluster for services. It cannot be used for other clusters.
+                IN_USE_SERVICE denotes that this range is claimed by
+                cluster(s) for services. User-managed services range can be
+                shared between clusters within the same subnetwork.
             IN_USE_SHAREABLE_POD (3):
                 IN_USE_SHAREABLE_POD denotes this range was created by the
                 network admin and is currently claimed by a cluster for
@@ -7932,6 +8046,38 @@ class ManagedPrometheusConfig(proto.Message):
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+
+
+class Fleet(proto.Message):
+    r"""Fleet is the fleet configuration for the cluster.
+
+    Attributes:
+        project (str):
+            The Fleet host project(project ID or project
+            number) where this cluster will be registered
+            to. This field cannot be changed after the
+            cluster has been registered.
+        membership (str):
+            [Output only] The full resource name of the registered fleet
+            membership of the cluster, in the format
+            ``//gkehub.googleapis.com/projects/*/locations/*/memberships/*``.
+        pre_registered (bool):
+            [Output only] Whether the cluster has been registered
+            through the fleet API.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    membership: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    pre_registered: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

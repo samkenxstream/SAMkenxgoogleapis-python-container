@@ -4,6 +4,56 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.20.0](https://github.com/googleapis/python-container/compare/v2.19.0...v2.20.0) (2023-04-11)
+
+
+### Features
+
+* Add support for updating additional pod IPv4 ranges for Standard and Autopilot clusters ([#365](https://github.com/googleapis/python-container/issues/365)) ([c9c29c4](https://github.com/googleapis/python-container/commit/c9c29c46f3c6a8d4dfebec3ec36e5c7fc6052bb7))
+
+## [2.19.0](https://github.com/googleapis/python-container/compare/v2.18.0...v2.19.0) (2023-04-06)
+
+
+### Features
+
+* Add support for disabling pod IP cidr overprovision. This feature requires special allowlisting for the projects. ([56f65fa](https://github.com/googleapis/python-container/commit/56f65fa23de31317e4cf39e50351ad1e1bb04b57))
+* Add update support for accelerator config ([56f65fa](https://github.com/googleapis/python-container/commit/56f65fa23de31317e4cf39e50351ad1e1bb04b57))
+
+## [2.18.0](https://github.com/googleapis/python-container/compare/v2.17.4...v2.18.0) (2023-03-28)
+
+
+### Features
+
+* Add a new fleet registration feature to v1beta1, v1 ([#360](https://github.com/googleapis/python-container/issues/360)) ([0bfdffe](https://github.com/googleapis/python-container/commit/0bfdffe31e660c3914081181c611efd5582a05d3))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#359](https://github.com/googleapis/python-container/issues/359)) ([d10ac7e](https://github.com/googleapis/python-container/commit/d10ac7e8db4d79011f1b5fa1bb508a8829a683ac))
+* Minor typo fix ([#356](https://github.com/googleapis/python-container/issues/356)) ([f41b699](https://github.com/googleapis/python-container/commit/f41b699907991248b0d14bd9d5ae3ab4a8e1aff7))
+
+## [2.17.4](https://github.com/googleapis/python-container/compare/v2.17.3...v2.17.4) (2023-02-28)
+
+
+### Documentation
+
+* Minor grammar improvements ([#351](https://github.com/googleapis/python-container/issues/351)) ([2a0eeae](https://github.com/googleapis/python-container/commit/2a0eeae897e7f2312690eed1e52119a6a572c667))
+
+## [2.17.3](https://github.com/googleapis/python-container/compare/v2.17.2...v2.17.3) (2023-02-03)
+
+
+### Documentation
+
+* Add clarification on whether `NodePool.version` is a required field ([#344](https://github.com/googleapis/python-container/issues/344)) ([071c147](https://github.com/googleapis/python-container/commit/071c147df8e6edd72ff66b1997f21e881acd9b32))
+
+## [2.17.2](https://github.com/googleapis/python-container/compare/v2.17.1...v2.17.2) (2023-01-30)
+
+
+### Documentation
+
+* Add references for available node image types ([76cfff8](https://github.com/googleapis/python-container/commit/76cfff85542aa1a8326efbfbc6d1c95b663e1452))
+* Clarified wording around the NodePoolUpdateStrategy default behavior ([76cfff8](https://github.com/googleapis/python-container/commit/76cfff85542aa1a8326efbfbc6d1c95b663e1452))
+
 ## [2.17.1](https://github.com/googleapis/python-container/compare/v2.17.0...v2.17.1) (2023-01-20)
 
 

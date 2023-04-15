@@ -21,6 +21,7 @@ __version__ = package_version.__version__
 from .services.cluster_manager import ClusterManagerAsyncClient, ClusterManagerClient
 from .types.cluster_service import (
     AcceleratorConfig,
+    AdditionalPodRangesConfig,
     AddonsConfig,
     AdvancedMachineFeatures,
     AuthenticatorGroupsConfig,
@@ -52,6 +53,7 @@ from .types.cluster_service import (
     DNSConfig,
     EphemeralStorageLocalSsdConfig,
     FastSocket,
+    Fleet,
     GatewayAPIConfig,
     GcePersistentDiskCsiDriverConfig,
     GcfsConfig,
@@ -120,6 +122,7 @@ from .types.cluster_service import (
     NotificationConfig,
     Operation,
     OperationProgress,
+    PodCIDROverprovisionConfig,
     PrivateClusterConfig,
     PrivateClusterMasterGlobalAccessConfig,
     PrivateIPv6GoogleAccess,
@@ -170,6 +173,7 @@ from .types.cluster_service import (
 __all__ = (
     "ClusterManagerAsyncClient",
     "AcceleratorConfig",
+    "AdditionalPodRangesConfig",
     "AddonsConfig",
     "AdvancedMachineFeatures",
     "AuthenticatorGroupsConfig",
@@ -202,6 +206,7 @@ __all__ = (
     "DnsCacheConfig",
     "EphemeralStorageLocalSsdConfig",
     "FastSocket",
+    "Fleet",
     "GPUSharingConfig",
     "GatewayAPIConfig",
     "GcePersistentDiskCsiDriverConfig",
@@ -270,6 +275,7 @@ __all__ = (
     "NotificationConfig",
     "Operation",
     "OperationProgress",
+    "PodCIDROverprovisionConfig",
     "PrivateClusterConfig",
     "PrivateClusterMasterGlobalAccessConfig",
     "PrivateIPv6GoogleAccess",

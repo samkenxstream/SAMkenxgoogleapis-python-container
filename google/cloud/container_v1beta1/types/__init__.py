@@ -15,6 +15,7 @@
 #
 from .cluster_service import (
     AcceleratorConfig,
+    AdditionalPodRangesConfig,
     AddonsConfig,
     AdvancedMachineFeatures,
     AuthenticatorGroupsConfig,
@@ -48,6 +49,7 @@ from .cluster_service import (
     EphemeralStorageConfig,
     EphemeralStorageLocalSsdConfig,
     FastSocket,
+    Fleet,
     GatewayAPIConfig,
     GcePersistentDiskCsiDriverConfig,
     GcfsConfig,
@@ -121,6 +123,7 @@ from .cluster_service import (
     NotificationConfig,
     Operation,
     OperationProgress,
+    PodCIDROverprovisionConfig,
     PodSecurityPolicyConfig,
     PrivateClusterConfig,
     PrivateClusterMasterGlobalAccessConfig,
@@ -177,6 +180,7 @@ from .cluster_service import (
 
 __all__ = (
     "AcceleratorConfig",
+    "AdditionalPodRangesConfig",
     "AddonsConfig",
     "AdvancedMachineFeatures",
     "AuthenticatorGroupsConfig",
@@ -209,6 +213,7 @@ __all__ = (
     "EphemeralStorageConfig",
     "EphemeralStorageLocalSsdConfig",
     "FastSocket",
+    "Fleet",
     "GatewayAPIConfig",
     "GcePersistentDiskCsiDriverConfig",
     "GcfsConfig",
@@ -281,6 +286,7 @@ __all__ = (
     "NotificationConfig",
     "Operation",
     "OperationProgress",
+    "PodCIDROverprovisionConfig",
     "PodSecurityPolicyConfig",
     "PrivateClusterConfig",
     "PrivateClusterMasterGlobalAccessConfig",
